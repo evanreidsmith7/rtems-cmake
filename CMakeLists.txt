@@ -27,6 +27,10 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 project(rki C)
 
+# Write build/compile_commands.json (exact compiler command per source file)
+# for clangd / VS Code IntelliSense. Works with the Makefile generator.
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Other tools from the same toolchain
 set(LD         ${RCC}/bin/${ARCH}-ld)
 set(OBJCOPY    ${RCC}/bin/${ARCH}-objcopy)
