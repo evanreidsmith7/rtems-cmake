@@ -1,0 +1,11 @@
+CompileFlags:
+  Compiler: /opt/rcc-1.3.2/bin/sparc-gaisler-rtems5-gcc
+  Add:
+    - -D__rtems__
+    - -I/opt/rcc-1.3.2/sparc-gaisler-rtems5/gr712rc/lib/include
+    - -I/opt/rcc-1.3.2/lib/gcc/sparc-gaisler-rtems5/10.5.0/include
+    - -I/opt/rcc-1.3.2/lib/gcc/sparc-gaisler-rtems5/10.5.0/include-fixed
+    - -I/opt/rcc-1.3.2/sparc-gaisler-rtems5/include
+  Remove: [-qrtems, -mcpu=*, -specs, -qbsp=*, -mfix-ut699, -mfix-gr712rc, -Werror, -pedantic]
+Completion:
+  HeaderInsertion: Never
