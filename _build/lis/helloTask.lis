@@ -1,0 +1,1191 @@
+SPARC GAS   			page 1
+
+
+   1              	 .file "helloTask.c"
+   2              	 .section ".text"
+   3              	.LLtext0:
+   4              	 .cfi_sections .debug_frame
+   5              	 .section ".rodata"
+   6              	 .align 8
+   7              	.LLC0:
+   8 0000 0A7E2048 	 .asciz "\n~ Hello ~"
+   8      656C6C6F 
+   8      207E00
+   9              	 .section .text.HelloTask,"ax",@progbits
+  10              	 .align 4
+  11              	 .global HelloTask
+  12              	 .type HelloTask,#function
+  13              	 .proc 020
+  14              	HelloTask:
+  15              	.LLFB99:
+  16              	 .file 1 "src/helloTask.c"
+   1:src/helloTask.c **** #include <stdio.h>
+   2:src/helloTask.c **** #include <rtems.h>
+   3:src/helloTask.c **** #include <stdlib.h>
+   4:src/helloTask.c **** 
+   5:src/helloTask.c **** /*
+   6:src/helloTask.c ****  * Simple RTEMS task that periodically prints "Hello from RTEMS task!".
+   7:src/helloTask.c ****  */
+   8:src/helloTask.c **** 
+   9:src/helloTask.c **** rtems_task HelloTask(
+  10:src/helloTask.c ****     rtems_task_argument arg
+  11:src/helloTask.c **** )
+  12:src/helloTask.c **** {
+  17              	 .loc 1 12 1
+  18              	 .cfi_startproc
+  19 0000 9DE3BF98 	 save %sp,-104,%sp
+  20              	 .cfi_window_save
+  21              	 .cfi_register 15,31
+  22              	 .cfi_def_cfa_register 30
+  23 0004 F027A044 	 st %i0,[%fp+68]
+  13:src/helloTask.c ****     rtems_interval ticks_per_second = rtems_clock_get_ticks_per_second();
+  24              	 .loc 1 13 20
+  25 0008 03000000 	 sethi %hi(_Watchdog_Ticks_per_second),%g1
+  26 000c 82106000 	 or %g1,%lo(_Watchdog_Ticks_per_second),%g1
+  27 0010 C2004000 	 ld [%g1],%g1
+  28 0014 C227BFF8 	 st %g1,[%fp-8]
+  14:src/helloTask.c ****     int i = 0;
+  29              	 .loc 1 14 9
+  30 0018 C027BFFC 	 st %g0,[%fp-4]
+  15:src/helloTask.c **** 
+  16:src/helloTask.c ****     while (i < 10)
+  31              	 .loc 1 16 11
+  32 001c 1080000C 	 b .LL2
+  33 0020 01000000 	 nop
+  34              	.LL3:
+  17:src/helloTask.c ****     {
+  18:src/helloTask.c ****         printf("\n~ Hello ~\n");
+  35              	 .loc 1 18 9
+  36 0024 03000000 	 sethi %hi(.LLC0),%g1
+  37 0028 90106000 	 or %g1,%lo(.LLC0),%o0
+SPARC GAS   			page 2
+
+
+  38 002c 40000000 	 call puts,0
+  39 0030 01000000 	 nop
+  19:src/helloTask.c ****         rtems_task_wake_after(ticks_per_second);
+  40              	 .loc 1 19 9
+  41 0034 D007BFF8 	 ld [%fp-8],%o0
+  42 0038 40000000 	 call rtems_task_wake_after,0
+  43 003c 01000000 	 nop
+  20:src/helloTask.c ****         i++;
+  44              	 .loc 1 20 10
+  45 0040 C207BFFC 	 ld [%fp-4],%g1
+  46 0044 82006001 	 add %g1,1,%g1
+  47 0048 C227BFFC 	 st %g1,[%fp-4]
+  48              	.LL2:
+  16:src/helloTask.c ****     {
+  49              	 .loc 1 16 11
+  50 004c C207BFFC 	 ld [%fp-4],%g1
+  51 0050 80A06009 	 cmp %g1,9
+  52 0054 04BFFFF4 	 ble .LL3
+  53 0058 01000000 	 nop
+  21:src/helloTask.c ****     }
+  22:src/helloTask.c **** 
+  23:src/helloTask.c ****     rtems_task_delete(RTEMS_SELF);
+  54              	 .loc 1 23 5
+  55 005c 90102000 	 mov 0,%o0
+  56 0060 40000000 	 call rtems_task_delete,0
+  57 0064 01000000 	 nop
+  24:src/helloTask.c ****     exit(1);
+  58              	 .loc 1 24 5
+  59 0068 90102001 	 mov 1,%o0
+  60 006c 40000000 	 call exit,0
+  61 0070 01000000 	 nop
+  62 0074 01000000 	 nop
+  63              	 .cfi_endproc
+  64              	.LLFE99:
+  65              	 .size HelloTask,.-HelloTask
+  66              	 .section ".rodata"
+  67 000b 00000000 	 .align 8
+  67      00
+  68              	.LLC1:
+  69 0010 48656C6C 	 .asciz "HelloTask create failed: %d\n"
+  69      6F546173 
+  69      6B206372 
+  69      65617465 
+  69      20666169 
+  70 002d 000000   	 .align 8
+  71              	.LLC2:
+  72 0030 48656C6C 	 .asciz "HelloTask start failed: %d\n"
+  72      6F546173 
+  72      6B207374 
+  72      61727420 
+  72      6661696C 
+  73              	 .section .text.start_hello_task,"ax",@progbits
+  74              	 .align 4
+  75              	 .global start_hello_task
+  76              	 .type start_hello_task,#function
+  77              	 .proc 020
+  78              	start_hello_task:
+SPARC GAS   			page 3
+
+
+  79              	.LLFB100:
+  25:src/helloTask.c **** }
+  26:src/helloTask.c **** 
+  27:src/helloTask.c **** /*
+  28:src/helloTask.c ****  * Helper function to create and start the HelloTask.
+  29:src/helloTask.c ****  */
+  30:src/helloTask.c **** void start_hello_task(void)
+  31:src/helloTask.c **** {
+  80              	 .loc 1 31 1
+  81              	 .cfi_startproc
+  82 0000 9DE3BF98 	 save %sp,-104,%sp
+  83              	 .cfi_window_save
+  84              	 .cfi_register 15,31
+  85              	 .cfi_def_cfa_register 30
+  32:src/helloTask.c ****     rtems_id          task_id;
+  33:src/helloTask.c ****     rtems_status_code sc;
+  34:src/helloTask.c **** 
+  35:src/helloTask.c ****     sc = rtems_task_create(
+  86              	 .loc 1 35 10
+  87 0004 8207BFF8 	 add %fp,-8,%g1
+  88 0008 9A100001 	 mov %g1,%o5
+  89 000c 98102000 	 mov 0,%o4
+  90 0010 96102000 	 mov 0,%o3
+  91 0014 15000004 	 sethi %hi(4096),%o2
+  92 0018 9210207A 	 mov 122,%o1
+  93 001c 03121153 	 sethi %hi(1212500992),%g1
+  94 0020 9010604F 	 or %g1,79,%o0
+  95 0024 40000000 	 call rtems_task_create,0
+  96 0028 01000000 	 nop
+  97 002c D027BFFC 	 st %o0,[%fp-4]
+  36:src/helloTask.c ****         rtems_build_name('H', 'E', 'L', 'O'),
+  37:src/helloTask.c ****         122,                           /* priority (lower than Init's 120) */
+  38:src/helloTask.c ****         RTEMS_MINIMUM_STACK_SIZE,
+  39:src/helloTask.c ****         RTEMS_DEFAULT_MODES,
+  40:src/helloTask.c ****         RTEMS_DEFAULT_ATTRIBUTES,
+  41:src/helloTask.c ****         &task_id
+  42:src/helloTask.c ****     );
+  43:src/helloTask.c **** 
+  44:src/helloTask.c ****     if (sc != RTEMS_SUCCESSFUL) {
+  98              	 .loc 1 44 8
+  99 0030 C207BFFC 	 ld [%fp-4],%g1
+ 100 0034 80A06000 	 cmp %g1,0
+ 101 0038 0280000A 	 be .LL5
+ 102 003c 01000000 	 nop
+  45:src/helloTask.c ****         printf("HelloTask create failed: %d\n", sc);
+ 103              	 .loc 1 45 9
+ 104 0040 D207BFFC 	 ld [%fp-4],%o1
+ 105 0044 03000000 	 sethi %hi(.LLC1),%g1
+ 106 0048 90106000 	 or %g1,%lo(.LLC1),%o0
+ 107 004c 40000000 	 call printf,0
+ 108 0050 01000000 	 nop
+ 109 0054 81E80000 	 restore
+ 110 0058 81C3E008 	 jmp %o7+8
+ 111 005c 01000000 	 nop
+ 112              	.LL5:
+  46:src/helloTask.c ****         return;
+  47:src/helloTask.c ****     }
+SPARC GAS   			page 4
+
+
+  48:src/helloTask.c **** 
+  49:src/helloTask.c ****     sc = rtems_task_start(task_id, HelloTask, 0);
+ 113              	 .loc 1 49 10
+ 114 0060 C407BFF8 	 ld [%fp-8],%g2
+ 115 0064 94102000 	 mov 0,%o2
+ 116 0068 03000000 	 sethi %hi(HelloTask),%g1
+ 117 006c 92106000 	 or %g1,%lo(HelloTask),%o1
+ 118 0070 90100002 	 mov %g2,%o0
+ 119 0074 40000000 	 call rtems_task_start,0
+ 120 0078 01000000 	 nop
+ 121 007c D027BFFC 	 st %o0,[%fp-4]
+  50:src/helloTask.c ****     if (sc != RTEMS_SUCCESSFUL) {
+ 122              	 .loc 1 50 8
+ 123 0080 C207BFFC 	 ld [%fp-4],%g1
+ 124 0084 80A06000 	 cmp %g1,0
+ 125 0088 02800007 	 be .LL4
+ 126 008c 01000000 	 nop
+  51:src/helloTask.c ****         printf("HelloTask start failed: %d\n", sc);
+ 127              	 .loc 1 51 9
+ 128 0090 D207BFFC 	 ld [%fp-4],%o1
+ 129 0094 03000000 	 sethi %hi(.LLC2),%g1
+ 130 0098 90106000 	 or %g1,%lo(.LLC2),%o0
+ 131 009c 40000000 	 call printf,0
+ 132 00a0 01000000 	 nop
+ 133              	.LL4:
+  52:src/helloTask.c ****     }
+  53:src/helloTask.c **** }
+ 134              	 .loc 1 53 1
+ 135 00a4 81E80000 	 restore
+ 136 00a8 81C3E008 	 jmp %o7+8
+ 137 00ac 01000000 	 nop
+ 138              	 .cfi_endproc
+ 139              	.LLFE100:
+ 140              	 .size start_hello_task,.-start_hello_task
+ 141              	 .section ".text"
+ 142              	.LLetext0:
+ 143              	 .file 2 "/home/ersmith/landis/29191_landis/rcc-1.3.2-gcc/sparc-gaisler-rtems5/include/machine/_default_types.h"
+ 144              	 .file 3 "/home/ersmith/landis/29191_landis/rcc-1.3.2-gcc/sparc-gaisler-rtems5/include/sys/_stdint.h"
+ 145              	 .file 4 "/opt/rcc-1.3.2/sparc-gaisler-rtems5/gr712rc/lib/include/rtems/score/cpu.h"
+ 146              	 .file 5 "/opt/rcc-1.3.2/sparc-gaisler-rtems5/gr712rc/lib/include/rtems/rtems/status.h"
+ 147              	 .file 6 "/opt/rcc-1.3.2/sparc-gaisler-rtems5/gr712rc/lib/include/rtems/score/object.h"
+ 148              	 .file 7 "/opt/rcc-1.3.2/sparc-gaisler-rtems5/gr712rc/lib/include/rtems/score/watchdogticks.h"
+ 149              	 .file 8 "/opt/rcc-1.3.2/sparc-gaisler-rtems5/gr712rc/lib/include/rtems/rtems/types.h"
+ 150              	 .file 9 "/opt/rcc-1.3.2/sparc-gaisler-rtems5/gr712rc/lib/include/rtems/rtems/tasks.h"
+ 151              	 .section .debug_info,"",@progbits
+ 152              	.LLdebug_info0:
+ 153 0000 00000250 	 .uaword 0x250
+ 154 0004 0004     	 .uahalf 0x4
+ 155 0006 00000000 	 .uaword .LLdebug_abbrev0
+ 156 000a 04       	 .byte 0x4
+ 157 000b 01       	 .uleb128 0x1
+ 158 000c 00000000 	 .uaword .LLASF56
+ 159 0010 0C       	 .byte 0xc
+ 160 0011 00000000 	 .uaword .LLASF57
+ 161 0015 00000000 	 .uaword .LLASF58
+ 162 0019 00000000 	 .uaword .LLdebug_ranges0+0
+ 163 001d 00000000 	 .uaword 0
+SPARC GAS   			page 5
+
+
+ 164 0021 00000000 	 .uaword .LLdebug_line0
+ 165 0025 02       	 .uleb128 0x2
+ 166 0026 01       	 .byte 0x1
+ 167 0027 06       	 .byte 0x6
+ 168 0028 00000000 	 .uaword .LLASF0
+ 169 002c 02       	 .uleb128 0x2
+ 170 002d 01       	 .byte 0x1
+ 171 002e 08       	 .byte 0x8
+ 172 002f 00000000 	 .uaword .LLASF1
+ 173 0033 02       	 .uleb128 0x2
+ 174 0034 02       	 .byte 0x2
+ 175 0035 05       	 .byte 0x5
+ 176 0036 00000000 	 .uaword .LLASF2
+ 177 003a 02       	 .uleb128 0x2
+ 178 003b 02       	 .byte 0x2
+ 179 003c 07       	 .byte 0x7
+ 180 003d 00000000 	 .uaword .LLASF3
+ 181 0041 03       	 .uleb128 0x3
+ 182 0042 04       	 .byte 0x4
+ 183 0043 05       	 .byte 0x5
+ 184 0044 696E7400 	 .asciz "int"
+ 185 0048 04       	 .uleb128 0x4
+ 186 0049 00000000 	 .uaword .LLASF7
+ 187 004d 02       	 .byte 0x2
+ 188 004e 4F       	 .byte 0x4f
+ 189 004f 19       	 .byte 0x19
+ 190 0050 00000054 	 .uaword 0x54
+ 191 0054 02       	 .uleb128 0x2
+ 192 0055 04       	 .byte 0x4
+ 193 0056 07       	 .byte 0x7
+ 194 0057 00000000 	 .uaword .LLASF4
+ 195 005b 02       	 .uleb128 0x2
+ 196 005c 08       	 .byte 0x8
+ 197 005d 05       	 .byte 0x5
+ 198 005e 00000000 	 .uaword .LLASF5
+ 199 0062 02       	 .uleb128 0x2
+ 200 0063 08       	 .byte 0x8
+ 201 0064 07       	 .byte 0x7
+ 202 0065 00000000 	 .uaword .LLASF6
+ 203 0069 04       	 .uleb128 0x4
+ 204 006a 00000000 	 .uaword .LLASF8
+ 205 006e 02       	 .byte 0x2
+ 206 006f E8       	 .byte 0xe8
+ 207 0070 1A       	 .byte 0x1a
+ 208 0071 00000054 	 .uaword 0x54
+ 209 0075 02       	 .uleb128 0x2
+ 210 0076 04       	 .byte 0x4
+ 211 0077 05       	 .byte 0x5
+ 212 0078 00000000 	 .uaword .LLASF9
+ 213 007c 02       	 .uleb128 0x2
+ 214 007d 08       	 .byte 0x8
+ 215 007e 04       	 .byte 0x4
+ 216 007f 00000000 	 .uaword .LLASF10
+ 217 0083 02       	 .uleb128 0x2
+ 218 0084 04       	 .byte 0x4
+ 219 0085 07       	 .byte 0x7
+ 220 0086 00000000 	 .uaword .LLASF11
+SPARC GAS   			page 6
+
+
+ 221 008a 02       	 .uleb128 0x2
+ 222 008b 01       	 .byte 0x1
+ 223 008c 06       	 .byte 0x6
+ 224 008d 00000000 	 .uaword .LLASF12
+ 225 0091 04       	 .uleb128 0x4
+ 226 0092 00000000 	 .uaword .LLASF13
+ 227 0096 03       	 .byte 0x3
+ 228 0097 30       	 .byte 0x30
+ 229 0098 14       	 .byte 0x14
+ 230 0099 00000048 	 .uaword 0x48
+ 231 009d 05       	 .uleb128 0x5
+ 232 009e 00000091 	 .uaword 0x91
+ 233 00a2 04       	 .uleb128 0x4
+ 234 00a3 00000000 	 .uaword .LLASF14
+ 235 00a7 03       	 .byte 0x3
+ 236 00a8 52       	 .byte 0x52
+ 237 00a9 15       	 .byte 0x15
+ 238 00aa 00000069 	 .uaword 0x69
+ 239 00ae 02       	 .uleb128 0x2
+ 240 00af 08       	 .byte 0x8
+ 241 00b0 04       	 .byte 0x4
+ 242 00b1 00000000 	 .uaword .LLASF15
+ 243 00b5 06       	 .uleb128 0x6
+ 244 00b6 00000000 	 .uaword .LLASF16
+ 245 00ba 04       	 .byte 0x4
+ 246 00bb 0473     	 .uahalf 0x473
+ 247 00bd 13       	 .byte 0x13
+ 248 00be 000000A2 	 .uaword 0xa2
+ 249 00c2 07       	 .uleb128 0x7
+ 250 00c3 07       	 .byte 0x7
+ 251 00c4 04       	 .byte 0x4
+ 252 00c5 00000054 	 .uaword 0x54
+ 253 00c9 05       	 .byte 0x5
+ 254 00ca 2B       	 .byte 0x2b
+ 255 00cb 0E       	 .byte 0xe
+ 256 00cc 00000185 	 .uaword 0x185
+ 257 00d0 08       	 .uleb128 0x8
+ 258 00d1 00000000 	 .uaword .LLASF17
+ 259 00d5 00       	 .byte 0
+ 260 00d6 08       	 .uleb128 0x8
+ 261 00d7 00000000 	 .uaword .LLASF18
+ 262 00db 01       	 .byte 0x1
+ 263 00dc 08       	 .uleb128 0x8
+ 264 00dd 00000000 	 .uaword .LLASF19
+ 265 00e1 02       	 .byte 0x2
+ 266 00e2 08       	 .uleb128 0x8
+ 267 00e3 00000000 	 .uaword .LLASF20
+ 268 00e7 03       	 .byte 0x3
+ 269 00e8 08       	 .uleb128 0x8
+ 270 00e9 00000000 	 .uaword .LLASF21
+ 271 00ed 04       	 .byte 0x4
+ 272 00ee 08       	 .uleb128 0x8
+ 273 00ef 00000000 	 .uaword .LLASF22
+ 274 00f3 05       	 .byte 0x5
+ 275 00f4 08       	 .uleb128 0x8
+ 276 00f5 00000000 	 .uaword .LLASF23
+ 277 00f9 06       	 .byte 0x6
+SPARC GAS   			page 7
+
+
+ 278 00fa 08       	 .uleb128 0x8
+ 279 00fb 00000000 	 .uaword .LLASF24
+ 280 00ff 07       	 .byte 0x7
+ 281 0100 08       	 .uleb128 0x8
+ 282 0101 00000000 	 .uaword .LLASF25
+ 283 0105 08       	 .byte 0x8
+ 284 0106 08       	 .uleb128 0x8
+ 285 0107 00000000 	 .uaword .LLASF26
+ 286 010b 09       	 .byte 0x9
+ 287 010c 08       	 .uleb128 0x8
+ 288 010d 00000000 	 .uaword .LLASF27
+ 289 0111 0A       	 .byte 0xa
+ 290 0112 08       	 .uleb128 0x8
+ 291 0113 00000000 	 .uaword .LLASF28
+ 292 0117 0B       	 .byte 0xb
+ 293 0118 08       	 .uleb128 0x8
+ 294 0119 00000000 	 .uaword .LLASF29
+ 295 011d 0C       	 .byte 0xc
+ 296 011e 08       	 .uleb128 0x8
+ 297 011f 00000000 	 .uaword .LLASF30
+ 298 0123 0D       	 .byte 0xd
+ 299 0124 08       	 .uleb128 0x8
+ 300 0125 00000000 	 .uaword .LLASF31
+ 301 0129 0E       	 .byte 0xe
+ 302 012a 08       	 .uleb128 0x8
+ 303 012b 00000000 	 .uaword .LLASF32
+ 304 012f 0F       	 .byte 0xf
+ 305 0130 08       	 .uleb128 0x8
+ 306 0131 00000000 	 .uaword .LLASF33
+ 307 0135 10       	 .byte 0x10
+ 308 0136 08       	 .uleb128 0x8
+ 309 0137 00000000 	 .uaword .LLASF34
+ 310 013b 11       	 .byte 0x11
+ 311 013c 08       	 .uleb128 0x8
+ 312 013d 00000000 	 .uaword .LLASF35
+ 313 0141 12       	 .byte 0x12
+ 314 0142 08       	 .uleb128 0x8
+ 315 0143 00000000 	 .uaword .LLASF36
+ 316 0147 13       	 .byte 0x13
+ 317 0148 08       	 .uleb128 0x8
+ 318 0149 00000000 	 .uaword .LLASF37
+ 319 014d 14       	 .byte 0x14
+ 320 014e 08       	 .uleb128 0x8
+ 321 014f 00000000 	 .uaword .LLASF38
+ 322 0153 15       	 .byte 0x15
+ 323 0154 08       	 .uleb128 0x8
+ 324 0155 00000000 	 .uaword .LLASF39
+ 325 0159 16       	 .byte 0x16
+ 326 015a 08       	 .uleb128 0x8
+ 327 015b 00000000 	 .uaword .LLASF40
+ 328 015f 17       	 .byte 0x17
+ 329 0160 08       	 .uleb128 0x8
+ 330 0161 00000000 	 .uaword .LLASF41
+ 331 0165 18       	 .byte 0x18
+ 332 0166 08       	 .uleb128 0x8
+ 333 0167 00000000 	 .uaword .LLASF42
+ 334 016b 19       	 .byte 0x19
+SPARC GAS   			page 8
+
+
+ 335 016c 08       	 .uleb128 0x8
+ 336 016d 00000000 	 .uaword .LLASF43
+ 337 0171 1A       	 .byte 0x1a
+ 338 0172 08       	 .uleb128 0x8
+ 339 0173 00000000 	 .uaword .LLASF44
+ 340 0177 1B       	 .byte 0x1b
+ 341 0178 08       	 .uleb128 0x8
+ 342 0179 00000000 	 .uaword .LLASF45
+ 343 017d 1C       	 .byte 0x1c
+ 344 017e 08       	 .uleb128 0x8
+ 345 017f 00000000 	 .uaword .LLASF46
+ 346 0183 1D       	 .byte 0x1d
+ 347 0184 00       	 .byte 0
+ 348 0185 04       	 .uleb128 0x4
+ 349 0186 00000000 	 .uaword .LLASF47
+ 350 018a 05       	 .byte 0x5
+ 351 018b B8       	 .byte 0xb8
+ 352 018c 03       	 .byte 0x3
+ 353 018d 000000C2 	 .uaword 0xc2
+ 354 0191 04       	 .uleb128 0x4
+ 355 0192 00000000 	 .uaword .LLASF48
+ 356 0196 06       	 .byte 0x6
+ 357 0197 50       	 .byte 0x50
+ 358 0198 14       	 .byte 0x14
+ 359 0199 00000091 	 .uaword 0x91
+ 360 019d 04       	 .uleb128 0x4
+ 361 019e 00000000 	 .uaword .LLASF49
+ 362 01a2 07       	 .byte 0x7
+ 363 01a3 26       	 .byte 0x26
+ 364 01a4 14       	 .byte 0x14
+ 365 01a5 00000091 	 .uaword 0x91
+ 366 01a9 09       	 .uleb128 0x9
+ 367 01aa 00000000 	 .uaword .LLASF59
+ 368 01ae 07       	 .byte 0x7
+ 369 01af 4F       	 .byte 0x4f
+ 370 01b0 17       	 .byte 0x17
+ 371 01b1 0000009D 	 .uaword 0x9d
+ 372 01b5 04       	 .uleb128 0x4
+ 373 01b6 00000000 	 .uaword .LLASF50
+ 374 01ba 08       	 .byte 0x8
+ 375 01bb 53       	 .byte 0x53
+ 376 01bc 1A       	 .byte 0x1a
+ 377 01bd 00000191 	 .uaword 0x191
+ 378 01c1 04       	 .uleb128 0x4
+ 379 01c2 00000000 	 .uaword .LLASF51
+ 380 01c6 08       	 .byte 0x8
+ 381 01c7 7F       	 .byte 0x7f
+ 382 01c8 1B       	 .byte 0x1b
+ 383 01c9 0000019D 	 .uaword 0x19d
+ 384 01cd 02       	 .uleb128 0x2
+ 385 01ce 01       	 .byte 0x1
+ 386 01cf 02       	 .byte 0x2
+ 387 01d0 00000000 	 .uaword .LLASF52
+ 388 01d4 04       	 .uleb128 0x4
+ 389 01d5 00000000 	 .uaword .LLASF53
+ 390 01d9 09       	 .byte 0x9
+ 391 01da 6A       	 .byte 0x6a
+SPARC GAS   			page 9
+
+
+ 392 01db 17       	 .byte 0x17
+ 393 01dc 000000B5 	 .uaword 0xb5
+ 394 01e0 0A       	 .uleb128 0xa
+ 395 01e1 00000000 	 .uaword .LLASF60
+ 396 01e5 01       	 .byte 0x1
+ 397 01e6 1E       	 .byte 0x1e
+ 398 01e7 06       	 .byte 0x6
+ 399 01e8 00000000 	 .uaword .LLFB100
+ 400 01ec 000000B0 	 .uaword .LLFE100-.LLFB100
+ 401 01f0 01       	 .uleb128 0x1
+ 402 01f1 9C       	 .byte 0x9c
+ 403 01f2 00000214 	 .uaword 0x214
+ 404 01f6 0B       	 .uleb128 0xb
+ 405 01f7 00000000 	 .uaword .LLASF54
+ 406 01fb 01       	 .byte 0x1
+ 407 01fc 20       	 .byte 0x20
+ 408 01fd 17       	 .byte 0x17
+ 409 01fe 000001B5 	 .uaword 0x1b5
+ 410 0202 02       	 .uleb128 0x2
+ 411 0203 91       	 .byte 0x91
+ 412 0204 78       	 .sleb128 -8
+ 413 0205 0C       	 .uleb128 0xc
+ 414 0206 736300   	 .asciz "sc"
+ 415 0209 01       	 .byte 0x1
+ 416 020a 21       	 .byte 0x21
+ 417 020b 17       	 .byte 0x17
+ 418 020c 00000185 	 .uaword 0x185
+ 419 0210 02       	 .uleb128 0x2
+ 420 0211 91       	 .byte 0x91
+ 421 0212 7C       	 .sleb128 -4
+ 422 0213 00       	 .byte 0
+ 423 0214 0D       	 .uleb128 0xd
+ 424 0215 00000000 	 .uaword .LLASF61
+ 425 0219 01       	 .byte 0x1
+ 426 021a 09       	 .byte 0x9
+ 427 021b 0C       	 .byte 0xc
+ 428 021c 00000000 	 .uaword .LLFB99
+ 429 0220 00000078 	 .uaword .LLFE99-.LLFB99
+ 430 0224 01       	 .uleb128 0x1
+ 431 0225 9C       	 .byte 0x9c
+ 432 0226 0E       	 .uleb128 0xe
+ 433 0227 61726700 	 .asciz "arg"
+ 434 022b 01       	 .byte 0x1
+ 435 022c 0A       	 .byte 0xa
+ 436 022d 19       	 .byte 0x19
+ 437 022e 000001D4 	 .uaword 0x1d4
+ 438 0232 03       	 .uleb128 0x3
+ 439 0233 91       	 .byte 0x91
+ 440 0234 C400     	 .sleb128 68
+ 441 0236 0B       	 .uleb128 0xb
+ 442 0237 00000000 	 .uaword .LLASF55
+ 443 023b 01       	 .byte 0x1
+ 444 023c 0D       	 .byte 0xd
+ 445 023d 14       	 .byte 0x14
+ 446 023e 000001C1 	 .uaword 0x1c1
+ 447 0242 02       	 .uleb128 0x2
+ 448 0243 91       	 .byte 0x91
+SPARC GAS   			page 10
+
+
+ 449 0244 78       	 .sleb128 -8
+ 450 0245 0C       	 .uleb128 0xc
+ 451 0246 6900     	 .asciz "i"
+ 452 0248 01       	 .byte 0x1
+ 453 0249 0E       	 .byte 0xe
+ 454 024a 09       	 .byte 0x9
+ 455 024b 00000041 	 .uaword 0x41
+ 456 024f 02       	 .uleb128 0x2
+ 457 0250 91       	 .byte 0x91
+ 458 0251 7C       	 .sleb128 -4
+ 459 0252 00       	 .byte 0
+ 460 0253 00       	 .byte 0
+ 461              	 .section .debug_abbrev,"",@progbits
+ 462              	.LLdebug_abbrev0:
+ 463 0000 01       	 .uleb128 0x1
+ 464 0001 11       	 .uleb128 0x11
+ 465 0002 01       	 .byte 0x1
+ 466 0003 25       	 .uleb128 0x25
+ 467 0004 0E       	 .uleb128 0xe
+ 468 0005 13       	 .uleb128 0x13
+ 469 0006 0B       	 .uleb128 0xb
+ 470 0007 03       	 .uleb128 0x3
+ 471 0008 0E       	 .uleb128 0xe
+ 472 0009 1B       	 .uleb128 0x1b
+ 473 000a 0E       	 .uleb128 0xe
+ 474 000b 55       	 .uleb128 0x55
+ 475 000c 17       	 .uleb128 0x17
+ 476 000d 11       	 .uleb128 0x11
+ 477 000e 01       	 .uleb128 0x1
+ 478 000f 10       	 .uleb128 0x10
+ 479 0010 17       	 .uleb128 0x17
+ 480 0011 00       	 .byte 0
+ 481 0012 00       	 .byte 0
+ 482 0013 02       	 .uleb128 0x2
+ 483 0014 24       	 .uleb128 0x24
+ 484 0015 00       	 .byte 0
+ 485 0016 0B       	 .uleb128 0xb
+ 486 0017 0B       	 .uleb128 0xb
+ 487 0018 3E       	 .uleb128 0x3e
+ 488 0019 0B       	 .uleb128 0xb
+ 489 001a 03       	 .uleb128 0x3
+ 490 001b 0E       	 .uleb128 0xe
+ 491 001c 00       	 .byte 0
+ 492 001d 00       	 .byte 0
+ 493 001e 03       	 .uleb128 0x3
+ 494 001f 24       	 .uleb128 0x24
+ 495 0020 00       	 .byte 0
+ 496 0021 0B       	 .uleb128 0xb
+ 497 0022 0B       	 .uleb128 0xb
+ 498 0023 3E       	 .uleb128 0x3e
+ 499 0024 0B       	 .uleb128 0xb
+ 500 0025 03       	 .uleb128 0x3
+ 501 0026 08       	 .uleb128 0x8
+ 502 0027 00       	 .byte 0
+ 503 0028 00       	 .byte 0
+ 504 0029 04       	 .uleb128 0x4
+ 505 002a 16       	 .uleb128 0x16
+SPARC GAS   			page 11
+
+
+ 506 002b 00       	 .byte 0
+ 507 002c 03       	 .uleb128 0x3
+ 508 002d 0E       	 .uleb128 0xe
+ 509 002e 3A       	 .uleb128 0x3a
+ 510 002f 0B       	 .uleb128 0xb
+ 511 0030 3B       	 .uleb128 0x3b
+ 512 0031 0B       	 .uleb128 0xb
+ 513 0032 39       	 .uleb128 0x39
+ 514 0033 0B       	 .uleb128 0xb
+ 515 0034 49       	 .uleb128 0x49
+ 516 0035 13       	 .uleb128 0x13
+ 517 0036 00       	 .byte 0
+ 518 0037 00       	 .byte 0
+ 519 0038 05       	 .uleb128 0x5
+ 520 0039 26       	 .uleb128 0x26
+ 521 003a 00       	 .byte 0
+ 522 003b 49       	 .uleb128 0x49
+ 523 003c 13       	 .uleb128 0x13
+ 524 003d 00       	 .byte 0
+ 525 003e 00       	 .byte 0
+ 526 003f 06       	 .uleb128 0x6
+ 527 0040 16       	 .uleb128 0x16
+ 528 0041 00       	 .byte 0
+ 529 0042 03       	 .uleb128 0x3
+ 530 0043 0E       	 .uleb128 0xe
+ 531 0044 3A       	 .uleb128 0x3a
+ 532 0045 0B       	 .uleb128 0xb
+ 533 0046 3B       	 .uleb128 0x3b
+ 534 0047 05       	 .uleb128 0x5
+ 535 0048 39       	 .uleb128 0x39
+ 536 0049 0B       	 .uleb128 0xb
+ 537 004a 49       	 .uleb128 0x49
+ 538 004b 13       	 .uleb128 0x13
+ 539 004c 00       	 .byte 0
+ 540 004d 00       	 .byte 0
+ 541 004e 07       	 .uleb128 0x7
+ 542 004f 04       	 .uleb128 0x4
+ 543 0050 01       	 .byte 0x1
+ 544 0051 3E       	 .uleb128 0x3e
+ 545 0052 0B       	 .uleb128 0xb
+ 546 0053 0B       	 .uleb128 0xb
+ 547 0054 0B       	 .uleb128 0xb
+ 548 0055 49       	 .uleb128 0x49
+ 549 0056 13       	 .uleb128 0x13
+ 550 0057 3A       	 .uleb128 0x3a
+ 551 0058 0B       	 .uleb128 0xb
+ 552 0059 3B       	 .uleb128 0x3b
+ 553 005a 0B       	 .uleb128 0xb
+ 554 005b 39       	 .uleb128 0x39
+ 555 005c 0B       	 .uleb128 0xb
+ 556 005d 01       	 .uleb128 0x1
+ 557 005e 13       	 .uleb128 0x13
+ 558 005f 00       	 .byte 0
+ 559 0060 00       	 .byte 0
+ 560 0061 08       	 .uleb128 0x8
+ 561 0062 28       	 .uleb128 0x28
+ 562 0063 00       	 .byte 0
+SPARC GAS   			page 12
+
+
+ 563 0064 03       	 .uleb128 0x3
+ 564 0065 0E       	 .uleb128 0xe
+ 565 0066 1C       	 .uleb128 0x1c
+ 566 0067 0B       	 .uleb128 0xb
+ 567 0068 00       	 .byte 0
+ 568 0069 00       	 .byte 0
+ 569 006a 09       	 .uleb128 0x9
+ 570 006b 34       	 .uleb128 0x34
+ 571 006c 00       	 .byte 0
+ 572 006d 03       	 .uleb128 0x3
+ 573 006e 0E       	 .uleb128 0xe
+ 574 006f 3A       	 .uleb128 0x3a
+ 575 0070 0B       	 .uleb128 0xb
+ 576 0071 3B       	 .uleb128 0x3b
+ 577 0072 0B       	 .uleb128 0xb
+ 578 0073 39       	 .uleb128 0x39
+ 579 0074 0B       	 .uleb128 0xb
+ 580 0075 49       	 .uleb128 0x49
+ 581 0076 13       	 .uleb128 0x13
+ 582 0077 3F       	 .uleb128 0x3f
+ 583 0078 19       	 .uleb128 0x19
+ 584 0079 3C       	 .uleb128 0x3c
+ 585 007a 19       	 .uleb128 0x19
+ 586 007b 00       	 .byte 0
+ 587 007c 00       	 .byte 0
+ 588 007d 0A       	 .uleb128 0xa
+ 589 007e 2E       	 .uleb128 0x2e
+ 590 007f 01       	 .byte 0x1
+ 591 0080 3F       	 .uleb128 0x3f
+ 592 0081 19       	 .uleb128 0x19
+ 593 0082 03       	 .uleb128 0x3
+ 594 0083 0E       	 .uleb128 0xe
+ 595 0084 3A       	 .uleb128 0x3a
+ 596 0085 0B       	 .uleb128 0xb
+ 597 0086 3B       	 .uleb128 0x3b
+ 598 0087 0B       	 .uleb128 0xb
+ 599 0088 39       	 .uleb128 0x39
+ 600 0089 0B       	 .uleb128 0xb
+ 601 008a 27       	 .uleb128 0x27
+ 602 008b 19       	 .uleb128 0x19
+ 603 008c 11       	 .uleb128 0x11
+ 604 008d 01       	 .uleb128 0x1
+ 605 008e 12       	 .uleb128 0x12
+ 606 008f 06       	 .uleb128 0x6
+ 607 0090 40       	 .uleb128 0x40
+ 608 0091 18       	 .uleb128 0x18
+ 609 0092 9642     	 .uleb128 0x2116
+ 610 0094 19       	 .uleb128 0x19
+ 611 0095 01       	 .uleb128 0x1
+ 612 0096 13       	 .uleb128 0x13
+ 613 0097 00       	 .byte 0
+ 614 0098 00       	 .byte 0
+ 615 0099 0B       	 .uleb128 0xb
+ 616 009a 34       	 .uleb128 0x34
+ 617 009b 00       	 .byte 0
+ 618 009c 03       	 .uleb128 0x3
+ 619 009d 0E       	 .uleb128 0xe
+SPARC GAS   			page 13
+
+
+ 620 009e 3A       	 .uleb128 0x3a
+ 621 009f 0B       	 .uleb128 0xb
+ 622 00a0 3B       	 .uleb128 0x3b
+ 623 00a1 0B       	 .uleb128 0xb
+ 624 00a2 39       	 .uleb128 0x39
+ 625 00a3 0B       	 .uleb128 0xb
+ 626 00a4 49       	 .uleb128 0x49
+ 627 00a5 13       	 .uleb128 0x13
+ 628 00a6 02       	 .uleb128 0x2
+ 629 00a7 18       	 .uleb128 0x18
+ 630 00a8 00       	 .byte 0
+ 631 00a9 00       	 .byte 0
+ 632 00aa 0C       	 .uleb128 0xc
+ 633 00ab 34       	 .uleb128 0x34
+ 634 00ac 00       	 .byte 0
+ 635 00ad 03       	 .uleb128 0x3
+ 636 00ae 08       	 .uleb128 0x8
+ 637 00af 3A       	 .uleb128 0x3a
+ 638 00b0 0B       	 .uleb128 0xb
+ 639 00b1 3B       	 .uleb128 0x3b
+ 640 00b2 0B       	 .uleb128 0xb
+ 641 00b3 39       	 .uleb128 0x39
+ 642 00b4 0B       	 .uleb128 0xb
+ 643 00b5 49       	 .uleb128 0x49
+ 644 00b6 13       	 .uleb128 0x13
+ 645 00b7 02       	 .uleb128 0x2
+ 646 00b8 18       	 .uleb128 0x18
+ 647 00b9 00       	 .byte 0
+ 648 00ba 00       	 .byte 0
+ 649 00bb 0D       	 .uleb128 0xd
+ 650 00bc 2E       	 .uleb128 0x2e
+ 651 00bd 01       	 .byte 0x1
+ 652 00be 3F       	 .uleb128 0x3f
+ 653 00bf 19       	 .uleb128 0x19
+ 654 00c0 03       	 .uleb128 0x3
+ 655 00c1 0E       	 .uleb128 0xe
+ 656 00c2 3A       	 .uleb128 0x3a
+ 657 00c3 0B       	 .uleb128 0xb
+ 658 00c4 3B       	 .uleb128 0x3b
+ 659 00c5 0B       	 .uleb128 0xb
+ 660 00c6 39       	 .uleb128 0x39
+ 661 00c7 0B       	 .uleb128 0xb
+ 662 00c8 27       	 .uleb128 0x27
+ 663 00c9 19       	 .uleb128 0x19
+ 664 00ca 11       	 .uleb128 0x11
+ 665 00cb 01       	 .uleb128 0x1
+ 666 00cc 12       	 .uleb128 0x12
+ 667 00cd 06       	 .uleb128 0x6
+ 668 00ce 40       	 .uleb128 0x40
+ 669 00cf 18       	 .uleb128 0x18
+ 670 00d0 9642     	 .uleb128 0x2116
+ 671 00d2 19       	 .uleb128 0x19
+ 672 00d3 00       	 .byte 0
+ 673 00d4 00       	 .byte 0
+ 674 00d5 0E       	 .uleb128 0xe
+ 675 00d6 05       	 .uleb128 0x5
+ 676 00d7 00       	 .byte 0
+SPARC GAS   			page 14
+
+
+ 677 00d8 03       	 .uleb128 0x3
+ 678 00d9 08       	 .uleb128 0x8
+ 679 00da 3A       	 .uleb128 0x3a
+ 680 00db 0B       	 .uleb128 0xb
+ 681 00dc 3B       	 .uleb128 0x3b
+ 682 00dd 0B       	 .uleb128 0xb
+ 683 00de 39       	 .uleb128 0x39
+ 684 00df 0B       	 .uleb128 0xb
+ 685 00e0 49       	 .uleb128 0x49
+ 686 00e1 13       	 .uleb128 0x13
+ 687 00e2 02       	 .uleb128 0x2
+ 688 00e3 18       	 .uleb128 0x18
+ 689 00e4 00       	 .byte 0
+ 690 00e5 00       	 .byte 0
+ 691 00e6 00       	 .byte 0
+ 692              	 .section .debug_aranges,"",@progbits
+ 693 0000 00000024 	 .uaword 0x24
+ 694 0004 0002     	 .uahalf 0x2
+ 695 0006 00000000 	 .uaword .LLdebug_info0
+ 696 000a 04       	 .byte 0x4
+ 697 000b 00       	 .byte 0
+ 698 000c 0000     	 .uahalf 0
+ 699 000e 0000     	 .uahalf 0
+ 700 0010 00000000 	 .uaword .LLFB99
+ 701 0014 00000078 	 .uaword .LLFE99-.LLFB99
+ 702 0018 00000000 	 .uaword .LLFB100
+ 703 001c 000000B0 	 .uaword .LLFE100-.LLFB100
+ 704 0020 00000000 	 .uaword 0
+ 705 0024 00000000 	 .uaword 0
+ 706              	 .section .debug_ranges,"",@progbits
+ 707              	.LLdebug_ranges0:
+ 708 0000 00000000 	 .uaword .LLFB99
+ 709 0004 00000000 	 .uaword .LLFE99
+ 710 0008 00000000 	 .uaword .LLFB100
+ 711 000c 00000000 	 .uaword .LLFE100
+ 712 0010 00000000 	 .uaword 0
+ 713 0014 00000000 	 .uaword 0
+ 714              	 .section .debug_line,"",@progbits
+ 715              	.LLdebug_line0:
+ 716 0000 00000215 	 .section .debug_str,"MS",@progbits,1
+ 716      00030000 
+ 716      01BF0401 
+ 716      FB0E0D00 
+ 716      01010101 
+ 717              	.LLASF16:
+ 718 0000 4350555F 	 .asciz "CPU_Uint32ptr"
+ 718      55696E74 
+ 718      33327074 
+ 718      7200
+ 719              	.LLASF40:
+ 720 000e 5254454D 	 .asciz "RTEMS_NOT_OWNER_OF_RESOURCE"
+ 720      535F4E4F 
+ 720      545F4F57 
+ 720      4E45525F 
+ 720      4F465F52 
+ 721              	.LLASF59:
+ 722 002a 5F576174 	 .asciz "_Watchdog_Ticks_per_second"
+SPARC GAS   			page 15
+
+
+ 722      6368646F 
+ 722      675F5469 
+ 722      636B735F 
+ 722      7065725F 
+ 723              	.LLASF34:
+ 724 0045 5254454D 	 .asciz "RTEMS_ILLEGAL_ON_REMOTE_OBJECT"
+ 724      535F494C 
+ 724      4C454741 
+ 724      4C5F4F4E 
+ 724      5F52454D 
+ 725              	.LLASF46:
+ 726 0064 5254454D 	 .asciz "RTEMS_PROXY_BLOCKING"
+ 726      535F5052 
+ 726      4F58595F 
+ 726      424C4F43 
+ 726      4B494E47 
+ 727              	.LLASF31:
+ 728 0079 5254454D 	 .asciz "RTEMS_INCORRECT_STATE"
+ 728      535F494E 
+ 728      434F5252 
+ 728      4543545F 
+ 728      53544154 
+ 729              	.LLASF39:
+ 730 008f 5254454D 	 .asciz "RTEMS_NOT_CONFIGURED"
+ 730      535F4E4F 
+ 730      545F434F 
+ 730      4E464947 
+ 730      55524544 
+ 731              	.LLASF7:
+ 732 00a4 5F5F7569 	 .asciz "__uint32_t"
+ 732      6E743332 
+ 732      5F7400
+ 733              	.LLASF49:
+ 734 00af 57617463 	 .asciz "Watchdog_Interval"
+ 734      68646F67 
+ 734      5F496E74 
+ 734      65727661 
+ 734      6C00
+ 735              	.LLASF2:
+ 736 00c1 73686F72 	 .asciz "short int"
+ 736      7420696E 
+ 736      7400
+ 737              	.LLASF55:
+ 738 00cb 7469636B 	 .asciz "ticks_per_second"
+ 738      735F7065 
+ 738      725F7365 
+ 738      636F6E64 
+ 738      00
+ 739              	.LLASF14:
+ 740 00dc 75696E74 	 .asciz "uintptr_t"
+ 740      7074725F 
+ 740      7400
+ 741              	.LLASF54:
+ 742 00e6 7461736B 	 .asciz "task_id"
+ 742      5F696400 
+ 743              	.LLASF0:
+ 744 00ee 7369676E 	 .asciz "signed char"
+SPARC GAS   			page 16
+
+
+ 744      65642063 
+ 744      68617200 
+ 745              	.LLASF27:
+ 746 00fa 5254454D 	 .asciz "RTEMS_INVALID_NUMBER"
+ 746      535F494E 
+ 746      56414C49 
+ 746      445F4E55 
+ 746      4D424552 
+ 747              	.LLASF57:
+ 748 010f 7372632F 	 .asciz "src/helloTask.c"
+ 748      68656C6C 
+ 748      6F546173 
+ 748      6B2E6300 
+ 749              	.LLASF19:
+ 750 011f 5254454D 	 .asciz "RTEMS_MP_NOT_CONFIGURED"
+ 750      535F4D50 
+ 750      5F4E4F54 
+ 750      5F434F4E 
+ 750      46494755 
+ 751              	.LLASF5:
+ 752 0137 6C6F6E67 	 .asciz "long long int"
+ 752      206C6F6E 
+ 752      6720696E 
+ 752      7400
+ 753              	.LLASF32:
+ 754 0145 5254454D 	 .asciz "RTEMS_ALREADY_SUSPENDED"
+ 754      535F414C 
+ 754      52454144 
+ 754      595F5355 
+ 754      5350454E 
+ 755              	.LLASF25:
+ 756 015d 5254454D 	 .asciz "RTEMS_INVALID_SIZE"
+ 756      535F494E 
+ 756      56414C49 
+ 756      445F5349 
+ 756      5A4500
+ 757              	.LLASF24:
+ 758 0170 5254454D 	 .asciz "RTEMS_OBJECT_WAS_DELETED"
+ 758      535F4F42 
+ 758      4A454354 
+ 758      5F574153 
+ 758      5F44454C 
+ 759              	.LLASF17:
+ 760 0189 5254454D 	 .asciz "RTEMS_SUCCESSFUL"
+ 760      535F5355 
+ 760      43434553 
+ 760      5346554C 
+ 760      00
+ 761              	.LLASF43:
+ 762 019a 5254454D 	 .asciz "RTEMS_NO_MEMORY"
+ 762      535F4E4F 
+ 762      5F4D454D 
+ 762      4F525900 
+ 763              	.LLASF44:
+ 764 01aa 5254454D 	 .asciz "RTEMS_IO_ERROR"
+ 764      535F494F 
+ 764      5F455252 
+SPARC GAS   			page 17
+
+
+ 764      4F5200
+ 765              	.LLASF18:
+ 766 01b9 5254454D 	 .asciz "RTEMS_TASK_EXITTED"
+ 766      535F5441 
+ 766      534B5F45 
+ 766      58495454 
+ 766      454400
+ 767              	.LLASF10:
+ 768 01cc 6C6F6E67 	 .asciz "long double"
+ 768      20646F75 
+ 768      626C6500 
+ 769              	.LLASF29:
+ 770 01d8 5254454D 	 .asciz "RTEMS_RESOURCE_IN_USE"
+ 770      535F5245 
+ 770      534F5552 
+ 770      43455F49 
+ 770      4E5F5553 
+ 771              	.LLASF1:
+ 772 01ee 756E7369 	 .asciz "unsigned char"
+ 772      676E6564 
+ 772      20636861 
+ 772      7200
+ 773              	.LLASF42:
+ 774 01fc 5254454D 	 .asciz "RTEMS_INTERNAL_ERROR"
+ 774      535F494E 
+ 774      5445524E 
+ 774      414C5F45 
+ 774      52524F52 
+ 775              	.LLASF21:
+ 776 0211 5254454D 	 .asciz "RTEMS_INVALID_ID"
+ 776      535F494E 
+ 776      56414C49 
+ 776      445F4944 
+ 776      00
+ 777              	.LLASF41:
+ 778 0222 5254454D 	 .asciz "RTEMS_NOT_IMPLEMENTED"
+ 778      535F4E4F 
+ 778      545F494D 
+ 778      504C454D 
+ 778      454E5445 
+ 779              	.LLASF45:
+ 780 0238 5254454D 	 .asciz "RTEMS_INTERRUPTED"
+ 780      535F494E 
+ 780      54455252 
+ 780      55505445 
+ 780      4400
+ 781              	.LLASF58:
+ 782 024a 2F686F6D 	 .asciz "/home/ersmith/utils/rtems-cmake"
+ 782      652F6572 
+ 782      736D6974 
+ 782      682F7574 
+ 782      696C732F 
+ 783              	.LLASF6:
+ 784 026a 6C6F6E67 	 .asciz "long long unsigned int"
+ 784      206C6F6E 
+ 784      6720756E 
+ 784      7369676E 
+SPARC GAS   			page 18
+
+
+ 784      65642069 
+ 785              	.LLASF13:
+ 786 0281 75696E74 	 .asciz "uint32_t"
+ 786      33325F74 
+ 786      00
+ 787              	.LLASF4:
+ 788 028a 756E7369 	 .asciz "unsigned int"
+ 788      676E6564 
+ 788      20696E74 
+ 788      00
+ 789              	.LLASF51:
+ 790 0297 7274656D 	 .asciz "rtems_interval"
+ 790      735F696E 
+ 790      74657276 
+ 790      616C00
+ 791              	.LLASF30:
+ 792 02a6 5254454D 	 .asciz "RTEMS_UNSATISFIED"
+ 792      535F554E 
+ 792      53415449 
+ 792      53464945 
+ 792      4400
+ 793              	.LLASF3:
+ 794 02b8 73686F72 	 .asciz "short unsigned int"
+ 794      7420756E 
+ 794      7369676E 
+ 794      65642069 
+ 794      6E7400
+ 795              	.LLASF12:
+ 796 02cb 63686172 	 .asciz "char"
+ 796      00
+ 797              	.LLASF23:
+ 798 02d0 5254454D 	 .asciz "RTEMS_TIMEOUT"
+ 798      535F5449 
+ 798      4D454F55 
+ 798      5400
+ 799              	.LLASF9:
+ 800 02de 6C6F6E67 	 .asciz "long int"
+ 800      20696E74 
+ 800      00
+ 801              	.LLASF47:
+ 802 02e7 7274656D 	 .asciz "rtems_status_code"
+ 802      735F7374 
+ 802      61747573 
+ 802      5F636F64 
+ 802      6500
+ 803              	.LLASF22:
+ 804 02f9 5254454D 	 .asciz "RTEMS_TOO_MANY"
+ 804      535F544F 
+ 804      4F5F4D41 
+ 804      4E5900
+ 805              	.LLASF35:
+ 806 0308 5254454D 	 .asciz "RTEMS_CALLED_FROM_ISR"
+ 806      535F4341 
+ 806      4C4C4544 
+ 806      5F46524F 
+ 806      4D5F4953 
+ 807              	.LLASF52:
+SPARC GAS   			page 19
+
+
+ 808 031e 5F426F6F 	 .asciz "_Bool"
+ 808      6C00
+ 809              	.LLASF26:
+ 810 0324 5254454D 	 .asciz "RTEMS_INVALID_ADDRESS"
+ 810      535F494E 
+ 810      56414C49 
+ 810      445F4144 
+ 810      44524553 
+ 811              	.LLASF37:
+ 812 033a 5254454D 	 .asciz "RTEMS_INVALID_CLOCK"
+ 812      535F494E 
+ 812      56414C49 
+ 812      445F434C 
+ 812      4F434B00 
+ 813              	.LLASF60:
+ 814 034e 73746172 	 .asciz "start_hello_task"
+ 814      745F6865 
+ 814      6C6C6F5F 
+ 814      7461736B 
+ 814      00
+ 815              	.LLASF11:
+ 816 035f 6C6F6E67 	 .asciz "long unsigned int"
+ 816      20756E73 
+ 816      69676E65 
+ 816      6420696E 
+ 816      7400
+ 817              	.LLASF15:
+ 818 0371 646F7562 	 .asciz "double"
+ 818      6C6500
+ 819              	.LLASF53:
+ 820 0378 7274656D 	 .asciz "rtems_task_argument"
+ 820      735F7461 
+ 820      736B5F61 
+ 820      7267756D 
+ 820      656E7400 
+ 821              	.LLASF8:
+ 822 038c 5F5F7569 	 .asciz "__uintptr_t"
+ 822      6E747074 
+ 822      725F7400 
+ 823              	.LLASF56:
+ 824 0398 474E5520 	 .asciz "GNU C17 10.5.0 -mcpu=leon3 -g -ffunction-sections -fdata-sections"
+ 824      43313720 
+ 824      31302E35 
+ 824      2E30202D 
+ 824      6D637075 
+ 825              	.LLASF28:
+ 826 03da 5254454D 	 .asciz "RTEMS_NOT_DEFINED"
+ 826      535F4E4F 
+ 826      545F4445 
+ 826      46494E45 
+ 826      4400
+ 827              	.LLASF33:
+ 828 03ec 5254454D 	 .asciz "RTEMS_ILLEGAL_ON_SELF"
+ 828      535F494C 
+ 828      4C454741 
+ 828      4C5F4F4E 
+ 828      5F53454C 
+SPARC GAS   			page 20
+
+
+ 829              	.LLASF61:
+ 830 0402 48656C6C 	 .asciz "HelloTask"
+ 830      6F546173 
+ 830      6B00
+ 831              	.LLASF48:
+ 832 040c 4F626A65 	 .asciz "Objects_Id"
+ 832      6374735F 
+ 832      496400
+ 833              	.LLASF38:
+ 834 0417 5254454D 	 .asciz "RTEMS_INVALID_NODE"
+ 834      535F494E 
+ 834      56414C49 
+ 834      445F4E4F 
+ 834      444500
+ 835              	.LLASF20:
+ 836 042a 5254454D 	 .asciz "RTEMS_INVALID_NAME"
+ 836      535F494E 
+ 836      56414C49 
+ 836      445F4E41 
+ 836      4D4500
+ 837              	.LLASF36:
+ 838 043d 5254454D 	 .asciz "RTEMS_INVALID_PRIORITY"
+ 838      535F494E 
+ 838      56414C49 
+ 838      445F5052 
+ 838      494F5249 
+ 839              	.LLASF50:
+ 840 0454 7274656D 	 .asciz "rtems_id"
+ 840      735F6964 
+ 840      00
+ 841              	 .ident "GCC: (Cobham Gaisler RCC 1.3.2) 10.5.0"
+SPARC GAS   			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 helloTask.c
+    {standard input}:14     .text.HelloTask:0000000000000000 HelloTask
+    {standard input}:78     .text.start_hello_task:0000000000000000 start_hello_task
+
+UNDEFINED SYMBOLS
+_Watchdog_Ticks_per_second
+puts
+rtems_task_wake_after
+rtems_task_delete
+exit
+rtems_task_create
+printf
+rtems_task_start
