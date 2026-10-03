@@ -19,7 +19,7 @@ make qemu       # run rki.elf in qemu-system-sparc -M leon3_generic
 CMake equivalent (see `CMakeLists.txt`, kept deliberately simple for learning):
 
 ```sh
-cmake -S . -B build                 # options: -DBSP=gr712rc -DRCC=/opt/rcc-1.3.2
+cmake -S . -B build -G "Unix Makefiles"   # never Ninja; options: -DBSP=gr712rc -DRCC=/opt/rcc-1.3.2
 cmake --build build                 # -> build/bin/rki.elf, rki.bin; listings in build/lis/
 cmake --build build -t qemu
 ```

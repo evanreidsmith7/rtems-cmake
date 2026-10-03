@@ -1,7 +1,7 @@
 # CMake build for the RKI RTEMS application (mirrors the root Makefile).
 #
 # Usage:
-#   cmake -S . -B build          # configure (once)
+#   cmake -S . -B build -G "Unix Makefiles"   # configure (once)
 #   cmake --build build          # build -> build/bin/rki.elf, rki.bin
 #   cmake --build build -t qemu  # run in QEMU
 #
